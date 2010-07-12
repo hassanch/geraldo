@@ -118,3 +118,15 @@ class CSVGenerator(ReportGenerator):
 
             self.writer.writerow(cells)
 
+        # Band summary.
+        if self.report.band_summary:
+            row = []
+            for element in self.report.band_summary.elements:
+                widget = element.clone()
+                widget.generator = self
+                widget.report = self.report
+                widget.band = self.report.band_summary
+                widget.page = None
+                widget.style = element.style
+                row.append(widget.text)
+            self.writer.writerow(row)
