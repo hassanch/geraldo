@@ -119,7 +119,7 @@ class HTMLGenerator(ReportGenerator):
                 td.appendChild(self.document.createTextNode(widget.text))
                 # Adds the CSS class if specified.
                 if hasattr(element, 'class_name'):
-                    td.setAttribute('class', element.cls)
+                    td.setAttribute('class', element.class_name)
                 tr.appendChild(td)
             tbody.appendChild(tr)
         table.appendChild(tbody)
