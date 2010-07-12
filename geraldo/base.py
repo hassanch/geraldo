@@ -178,6 +178,9 @@ class BaseReport(GeraldoObject):
     after_print = None          # V     after generate
     on_new_page = None
 
+    # Media for passing in custom CSS and JS for the HTMLGenerator.
+    media = None
+
     def __init__(self, queryset=None):
         self.queryset = queryset or self.queryset
 
