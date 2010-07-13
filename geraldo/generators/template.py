@@ -53,8 +53,8 @@ class TemplateGenerator(ReportGenerator):
             report_widgets.append(row)
 
         # Band summary.
+        report_band_summary = []
         if self.report.band_summary:
-            report_band_summary = []
             for element in self.report.band_summary.elements:
                 widget = element.clone()
                 widget.generator = self
