@@ -118,8 +118,9 @@ class HTMLGenerator(ReportGenerator):
                 # Adds the text.
                 td.appendChild(self.document.createTextNode(widget.text))
                 # Adds the CSS class if specified.
-                if hasattr(element, 'class_name'):
-                    td.setAttribute('class', element.class_name)
+                css_classes = getattr(element, 'css_classes', [])
+                if css_classes:
+                    td.setAttribute('class', ' '.join(css_classes))
                 tr.appendChild(td)
             tbody.appendChild(tr)
         table.appendChild(tbody)
@@ -140,8 +141,9 @@ class HTMLGenerator(ReportGenerator):
                     self.set_style(td, widget.style)
                 td.appendChild(self.document.createTextNode(widget.text))
                 # Adds the CSS class if specified.
-                if hasattr(element, 'class_name'):
-                    td.setAttribute('class', element.class_name)
+                css_classes = getattr(element, 'css_classes', [])
+                if css_classes:
+                    td.setAttribute('class', ' '.join(css_classes))
                 tr.appendChild(td)
             tfoot.appendChild(tr)
             table.appendChild(tfoot)

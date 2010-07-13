@@ -45,6 +45,7 @@ class TemplateGenerator(ReportGenerator):
                 widget.report = self.report
                 widget.band = self.report.band_detail
                 widget.page = None
+                widget.css_classes = getattr(element, 'css_classes', [])
                 # Sets the style attribute.
                 widget.style = element.style
                 row.append(widget)
@@ -59,6 +60,7 @@ class TemplateGenerator(ReportGenerator):
                 widget.report = self.report
                 widget.band = self.report.band_summary
                 widget.page = None
+                widget.css_classes = getattr(element, 'css_classes', [])
                 widget.style = element.style
                 report_band_summary.append(widget)
 
