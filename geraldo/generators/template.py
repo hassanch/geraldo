@@ -24,6 +24,7 @@ class TemplateGenerator(ReportGenerator):
         super(TemplateGenerator, self).execute()
 
         try:
+            from django.template import Context
             from django.template.loader import render_to_string
         except ImportError:
             raise ValueError('TemplateGenerator only works with Django.')
@@ -65,14 +66,14 @@ class TemplateGenerator(ReportGenerator):
                 report_band_summary.append(widget)
 
         self.report.do_before_print(generator=self)
-        context = {
+        context = Context({
             'report': self.report,
             'report_band_summary': report_band_summary,
             'report_columns': columns,
             'report_first_row_with_column_names': self.first_row_with_column_names,
             'report_objects': objects,
             'report_widgets': report_widgets
-        }
+        })
         if self.extra_context:
             context.update(self.extra_context)
         self.filename.write(render_to_string(self.template, context))
