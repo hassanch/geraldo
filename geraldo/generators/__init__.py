@@ -4,4 +4,5 @@ from xmlstruct import XMLStructGenerator
 from pdf import PDFGenerator
 from text import TextGenerator
 from csvgen import CSVGenerator
+from template import TemplateGenerator
 
