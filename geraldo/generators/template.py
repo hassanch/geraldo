@@ -1,4 +1,5 @@
 from geraldo.generators.base import ReportGenerator
+from geraldo.widgets import ObjectValue
 
 
 class TemplateGenerator(ReportGenerator):
@@ -27,10 +28,48 @@ class TemplateGenerator(ReportGenerator):
         except ImportError:
             raise ValueError('TemplateGenerator only works with Django.')
 
+        # Makes a sorted list of columns
+        columns = [el for el in self.report.band_detail.elements if isinstance(el, ObjectValue)]
+        columns.sort(lambda a,b: cmp(a.left, b.left) or cmp(a.width, b.width))
+
+        # Makes a 2D list of the widgets.
+        objects = self.report.get_objects_list()
+        report_widgets = []
+        for obj in objects:
+            row = []
+            for element in columns:
+                widget = element.clone()
+                # Set widget basic attributes
+                widget.instance = obj
+                widget.generator = self
+                widget.report = self.report
+                widget.band = self.report.band_detail
+                widget.page = None
+                # Sets the style attribute.
+                widget.style = element.style
+                row.append(widget)
+            report_widgets.append(row)
+
+        # Band summary.
+        if self.report.band_summary:
+            report_band_summary = []
+            for element in self.report.band_summary.elements:
+                widget = element.clone()
+                widget.generator = self
+                widget.report = self.report
+                widget.band = self.report.band_summary
+                widget.page = None
+                widget.style = element.style
+                report_band_summary.append(widget)
+
         self.report.do_before_print(generator=self)
         context = {
             'report': self.report,
-            'objects': self.report.get_objects_list()
+            'report_band_summary': report_band_summary,
+            'report_columns': columns,
+            'report_first_row_with_column_names': self.first_row_with_column_names,
+            'report_objects': objects,
+            'report_widgets': report_widgets
         }
         if self.extra_context:
             context.update(self.extra_context)
