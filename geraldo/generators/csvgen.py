@@ -111,7 +111,10 @@ class CSVGenerator(ReportGenerator):
                 widget.band = self.report.band_detail
                 widget.page = None
 
-                cells.append(widget.text)
+                text = widget.text
+                if isinstance(text, unicode):
+                    text = text.encode('UTF-8')
+                cells.append(text)
 
             # Next object
             self._current_object_index += 1
